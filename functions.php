@@ -1,11 +1,20 @@
 <?php 
 
 define('ORIGINE', [
+    'Nom'   => 'MERCREDI',
+    'JOUR'  => 1,
+    'MOIS'  => 1,
+    'ANNEE' => 1902
+]);
+
+/*
+define('ORIGINE', [
     'Nom'   => 'VENDREDI',
     'JOUR'  => 1,
     'MOIS'  => 4,
     'ANNEE' => 2022
 ]);
+*/
 
 function nombre_jour($mm,$aaaa){
     switch($mm){
@@ -37,7 +46,7 @@ function est_valide($d){
 
 function fdebug($tab){
     print_r($tab);
-    //die('END.');
+    die('END.');
 }
 
 function date_lendemain($d){
@@ -148,22 +157,35 @@ function duree($d1, $d2){
 }
 
 function string_date($d, $sep="/"){
-    return "".$d[0].$sep.$d[1].$sep.$d[2];
+    return $d[0].$sep.$d[1].$sep.$d[2];
 }
 
 function nom_jour($d){
     $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
-    $duree = inferieur($d,ORIGINE) ? duree($d,ORIGINE)%7 : duree(ORIGINE,$d)%7;
-    $index_nom_origine = array_search(ORIGINE['NOM'], $noms);
-    if(inferieur($d,ORIGINE)) return $noms[($index_nom_origine+$duree)%7];
-    else{
-        // reculer mais pas de val neg
-    }
-    
+    $origine = [ORIGINE['JOUR'], ORIGINE['MOIS'], ORIGINE['ANNEE']];
+    $duree = inferieur($d,$origine) ? duree($d,$origine)%7 : duree($origine,$d)%7;
+    $index_nom_origine = array_search(ORIGINE['Nom'], $noms);
+    if(!inferieur($d,$origine)) return $noms[($index_nom_origine+$duree)%7];
+    return $noms[($index_nom_origine-$duree)%7];    
 }
 
 function afficher_mois($mm, $aaaa){
+    $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
     $nom = nom_jour([1,$mm,$aaaa]);
-    // la suite ici 05/04/2022
+    
+    $ecart_deb = array_search($nom,$noms);
+    $nbr_jour = nombre_jour($mm, $aaaa);
+    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
+    $total = $ecart_deb + $nbr_jour + $ecart_fin;
+
+    foreach($noms as $jr) printf("%3s", substr($jr, 0, 1));
+    echo "\n";
+    for($i=1, $k = 1; $i<=$total; $i++){
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
+            printf("%3s", $k++);
+        else
+            printf("%3s", "-");
+        if($i%7==0) echo "\n";
+    }
 }
 

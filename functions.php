@@ -1,5 +1,6 @@
 <?php 
 
+// calendrier > 1/1/1902
 define('ORIGINE', [
     'Nom'   => 'MERCREDI',
     'JOUR'  => 1,

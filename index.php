@@ -6,73 +6,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendrier</title>
+    <link rel="stylesheet" href="style_cal.css">
 </head>
 <body>
-    <div id="container">
-        <div id="formulaire">
-            <form action="#" method="GET">
-                <label for="mounths">Choisir un mois:</label>
-                <select id="mounths" name="mounths">
-                    <option value="0">-----</option>
-                    <option value="1">Janvier</option>
-                    <option value="2">Fevrier</option>
-                    <option value="3">Mars</option>
-                    <option value="4">Avril</option>
-                    <option value="5">Mai</option>
-                    <option value="6">Juin</option>
-                    <option value="7">Juillet</option>
-                    <option value="8">Août</option>
-                    <option value="9">Septembre</option>
-                    <option value="10">Octobre</option>
-                    <option value="11">Novembre</option>
-                    <option value="12">Decembre</option>
-                </select>
+  <?php $an = isset($_GET['year']) ? $_GET['year'] : 2022; ?>
 
-                <label for="year">Choisir une année:</label>
-                <select id="year" name="year">
-                    <option value="2000">2000</option>
-                    <option value="2001">2001</option>
-                    <option value="2002">2002</option>
-                    <option value="2003">2003</option>
-                    <option value="2004">2004</option>
-                    <option value="2005">2005</option>
-                    <option value="2006">2006</option>
-                    <option value="2007">2007</option>
-                    <option value="2008">2008</option>
-                    <option value="2009">2009</option>
-                    <option value="2010">2010</option>
-                    <option value="2011">2011</option>
-                    <option value="2012">2012</option>
-                </select>
-            </form>
-        </div>
-        <div id="calendrier">
-            <div id="year-title">
-                <h1>2022</h1>
-            </div>
-            <div id="months-content">
-                <div id="row-1">
-                    <span>Jan.</span>
-                    <span>Fev.</span>
-                    <span>Mars</span>
-                </div>
-                <div id="row-2">
-                    <span>Avr.</span>
-                    <span>Mai</span>
-                    <span>Juin</span>
-                </div>
-                <div id="row-3">
-                    <span>Juil</span>
-                    <span>Aout</span>
-                    <span>Sept</span>
-                </div>
-                <div id="row-4">
-                    <span>Oct.</span>
-                    <span>Nov.</span>
-                    <span>Dec.</span>
-                </div>
-            </div>
-        </div>
+      <div class="formulaire">
+        <form action="#" method="GET">
+          <label for="months">Choisir un mois:</label>
+          <select id="months" name="month">
+            <?php for($mois=1; $mois<=12; $mois++){ ?>
+              <option value="<?php echo $mois; ?>"><?php echo MONTHS[$mois-1]; ?></option>
+            <?php } ?>
+          </select>
+
+          <label for="year">Choisir une année:</label>
+          <select id="year" name="year">
+            <?php for($annee=2022; $annee<=2100; $annee++){ ?>
+              <option value="<?php echo $annee; ?>"><?php echo $annee; ?></option>
+            <?php } ?>
+          </select>
+          <input type="submit">
+        </form>
+      </div>
+      
+      <div class="calendrier">
+      <div class="year">
+         <h1><?php echo $an; ?></h1>
+      </div>
+      <div id="months-content">
+        <?php for($m=1; $m<=12; $m+=3){ ?>
+          <div class="month-row">
+              <div class="col-1"><?php echo afficher_mois_html_table($m, $an) ?></div>
+              <div class="col-2"><?php echo afficher_mois_html_table($m+1, $an) ?></div>
+              <div class="col-3"><?php echo afficher_mois_html_table($m+2, $an) ?></div>
+          </div>
+        <?php } ?>
+      </div>
     </div>
+    
 </body>
 </html>

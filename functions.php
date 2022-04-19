@@ -1,21 +1,34 @@
 <?php 
 
-// calendrier > 1/1/1902
 define('ORIGINE', [
-    'Nom'   => 'MERCREDI',
-    'JOUR'  => 1,
-    'MOIS'  => 1,
-    'ANNEE' => 1902
+    'Nom'   => 'LUNDI',
+    'JOUR'  => 27,
+    'MOIS'  => 12,
+    'ANNEE' => 2021
 ]);
 
-/*
-define('ORIGINE', [
-    'Nom'   => 'VENDREDI',
-    'JOUR'  => 1,
-    'MOIS'  => 4,
-    'ANNEE' => 2022
+define('DAYS_NUM', [
+    'LUNDI' => 1,
+    'MARDI' => 2,
+    'MERCREDI' => 3,
+    'JEUDI' => 4,
+    'VENDREDI' => 5,
+    'SAMEDI' => 6,
+    'DIMANCHE' => 7,
 ]);
-*/
+
+define('NUM_DAYS', [
+    1 => 'LUNDI',
+    2 => 'MARDI',
+    3 => 'MERCREDI',
+    4 => 'JEUDI',
+    5 => 'VENDREDI',
+    6 =>'SAMEDI',
+    7 =>'DIMANCHE'
+]);
+
+define('MONTHS', array("Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Semptembre", "Octobre", "Novembre", "Decembre"));
+
 
 function nombre_jour($mm,$aaaa){
     switch($mm){
@@ -188,5 +201,47 @@ function afficher_mois($mm, $aaaa){
             printf("%3s", "-");
         if($i%7==0) echo "\n";
     }
+}
+
+function endsWith($haystack, $needle) {
+    $length = strlen($needle);
+    return $length > 0 ? substr($haystack, -$length) === $needle : true;
+}
+
+function afficher_mois_html_table($mm, $aaaa){
+    $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
+    $nom = nom_jour([1,$mm,$aaaa]);
+    $mois = array("Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Semptembre", "Octobre", "Novembre", "Decembre");
+    $ecart_deb = array_search($nom,$noms);
+    $nbr_jour = nombre_jour($mm, $aaaa);
+    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
+    $total = $ecart_deb + $nbr_jour + $ecart_fin;
+    // construction dune table html contenant les données du mois
+    $nom_mois = $mois[$mm-1];
+    $table_mois = <<<azerty
+    <table>
+        <caption>$nom_mois</caption>
+        <tr>
+    azerty;
+    // la prmiere ligne contient les initiales des noms d jour de la sem
+    foreach($noms as $jr) $table_mois .= "<td>".substr($jr, 0, 1)."</td>" ;
+    $table_mois .= <<<azerto
+        </tr>
+        <tr>
+    azerto;
+    // les autres lignes 
+    for($i=1, $k = 1; $i<=$total; $i++){
+        if (endsWith($table_mois, "</tr>"))  $table_mois .= "<tr>";
+        //$table_mois .= "<tr>";
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
+            $table_mois .= "<td>".$k++."</td>";
+        else
+            $table_mois .= "<td>"."-"."</td>";
+
+        if($i%7==0) $table_mois .= "</tr>";
+    }
+    
+    return $table_mois."</table>";
+
 }
 

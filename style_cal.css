@@ -1,0 +1,38 @@
+
+.calendrier {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+}
+/*
+.formulaire {
+    border : dashed 1px black;
+    margin : 10px;
+    padding: 20px;
+}
+*/
+.month-row{
+    height:200px;
+}
+.col-1 {
+    width: 31%;
+    float:left; 
+    margin: 2px;
+    padding: 3px;
+}
+.col-2 {
+    width: 31%;
+    float:left;
+    margin: 2px;
+    padding: 3px;
+}
+.col-3 {
+    width: 31%;
+    float:left;
+    margin: 2px;
+    padding: 3px;
+}
+      
+    

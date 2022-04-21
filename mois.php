@@ -1,13 +1,7 @@
-<?php include "functions.php"; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php echo afficher_mois_html_table(1, 2022); ?>
-</body>
-</html>
+<?php 
+$d1 = new DateTime('2012-02-1');
+$d2 = new DateTime('2012-02-16');
+$d = date_diff($d1, $d2);
+
+foreach($d as $k=>$v) 
+    echo "$k=>$v\t(".gettype($v).")\n";

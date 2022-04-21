@@ -1,38 +1,20 @@
-
-.calendrier {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    margin: 0px;
-    padding: 0px;
+.grid-container {
+    /*margin-left: 180px;*/
+    width: 70%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+    padding: 10px;
 }
-/*
-.formulaire {
-    border : dashed 1px black;
-    margin : 10px;
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
     padding: 20px;
+    font-size: 30px;
+    text-align: center;
 }
-*/
-.month-row{
-    height:200px;
+.formulaire {
+    width: 70%;
+    background-color: #f328c7;
+    padding: 10px;
 }
-.col-1 {
-    width: 31%;
-    float:left; 
-    margin: 2px;
-    padding: 3px;
-}
-.col-2 {
-    width: 31%;
-    float:left;
-    margin: 2px;
-    padding: 3px;
-}
-.col-3 {
-    width: 31%;
-    float:left;
-    margin: 2px;
-    padding: 3px;
-}
-      
-    

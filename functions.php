@@ -43,7 +43,7 @@ function nombre_jour($mm,$aaaa){
     }
 }
 
-function est_valide($d){
+function est_valide($d){ //O(1)
     // format de la date : [jj, mm, aaaa]
     if($d[0]<=0 or $d[0]>31 or $d[1]<=0 or $d[1]>12 or $d[2]<0) return false;
     switch($d[1]){
@@ -63,14 +63,16 @@ function fdebug($tab){
     die('END.');
 }
 
-function date_lendemain($d){
+function date_lendemain($d){ // O(1)
     //debug($d);
-    if(!est_valide($d)) throw new Exception("Une date utilisee n'est pas valide!\n
-    Calcule du lendemain.");
+    if(!est_valide($d)){ // complxit de est_valide +
+        throw new Exception("Une date utilisee n'est pas valide!\nCalcule du lendemain.");
+    // equivaleeente à une affectation
+    } 
     $dd = [$d[0], $d[1], $d[2]];
     //debug($dd);
-    switch($d[1]){
-        case 2: 
+    switch($d[1]){ 
+        case 2: // O(1) +
             if($d[2]%4==0){
                 if($d[0]<29){ 
                     $dd[0]++;
@@ -90,7 +92,7 @@ function date_lendemain($d){
         case 4:
         case 6:
         case 9:
-        case 11:
+        case 11: // O(1) +
             //return $d[0]<=30;
             if($d[0]<30) $dd[0]++;
             else{
@@ -98,7 +100,7 @@ function date_lendemain($d){
                 $dd[1]++;
             }
             break;
-        default: 
+        default: // O(1)
             //return $d[0]<=31; 
             if($d[0]<31) $dd[0]++;
             elseif($d[1]!=12){
@@ -159,13 +161,13 @@ function inferieur($petite, $grande){
     if($petite[0]<=$grande[0]) return true;
 }
 
-function duree($d1, $d2){
-    assert(inferieur($d1,$d2));
+function duree($d1, $d2){ // O(n)
+    // assert(inferieur($d1,$d2));
     $jrs = 0;
     $j = [$d1[0], $d1[1], $d1[2]];
-    while(!egales($j, $d2)){
+    while(!egales($j, $d2)){ // N * (O(1)+
         $jrs++;
-        $j = date_lendemain($j); # retourne un nouveau array ?
+        $j = date_lendemain($j); # O(1))
     }
     return $jrs;
 }
@@ -175,12 +177,12 @@ function string_date($d, $sep="/"){
 }
 
 function nom_jour($d){
-    $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
+    $noms = array_values(NUM_DAYS);
     $origine = [ORIGINE['JOUR'], ORIGINE['MOIS'], ORIGINE['ANNEE']];
-    $duree = inferieur($d,$origine) ? duree($d,$origine)%7 : duree($origine,$d)%7;
+    // refaire l'algorithme durée
+    $duree = inferieur($d,$origine) ? -1*(duree($d,$origine)%7) : duree($origine,$d)%7;
     $index_nom_origine = array_search(ORIGINE['Nom'], $noms);
-    if(!inferieur($d,$origine)) return $noms[($index_nom_origine+$duree)%7];
-    return $noms[($index_nom_origine-$duree)%7];    
+    return $noms[($index_nom_origine+$duree)%7];
 }
 
 function afficher_mois($mm, $aaaa){
@@ -233,15 +235,84 @@ function afficher_mois_html_table($mm, $aaaa){
     for($i=1, $k = 1; $i<=$total; $i++){
         if (endsWith($table_mois, "</tr>"))  $table_mois .= "<tr>";
         //$table_mois .= "<tr>";
-        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
-            $table_mois .= "<td>".$k++."</td>";
-        else
-            $table_mois .= "<td>"."-"."</td>";
-
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour){ 
+            // si $i%7==0 : td est de classe dimanche
+            if ($i%7==0) $table_mois .= '<td class="dimanche">'.$k++."</td>";
+            // else :
+            else $table_mois .= "<td>".$k++."</td>";
+        }else{
+            // si $i%7==0 : td est de classe dimanche
+            if ($i%7==0) $table_mois .= '<td class="dimanche">'."-"."</td>";
+            // else :
+            else $table_mois .= "<td>"."-"."</td>";
+        }
         if($i%7==0) $table_mois .= "</tr>";
     }
     
     return $table_mois."</table>";
 
 }
+
+/* algorithme nouveau pour calcul écart entre dates */
+function diff_annee_par_jour($d1, $d2){
+    /* assert that d1>d2 */
+    $compt = 0;
+    for($annee=$d1[2]; $annee<=$d2[2]; $annee++)
+        $compt += $annee%4==0 ? 365 : 366;
+    return $compt;
+}
+
+function troncon_2($d1){
+    $compt = 0;
+    if($d1[1]<12){
+        for($mois=$d1[1]+1; $mois<=12; $mois++)
+            $compt += nombre_jour($mois,$d1[2]);
+    }
+    return $compt;
+}
+
+function troncon_4($d2){
+    $compt = 0;
+    if($d2[1]>1){
+        for($mois=1; $mois<=$d2[1]; $mois++)
+            $compt += nombre_jour($mois,$d2[2]);
+    }
+    return $compt;
+}
+
+function troncon_1($d1){
+    return nombre_jour($d2[1],$d2[2]) - $d2[0];
+}
+
+function troncon_5($d2){
+    return $d2[0];
+}
+
+function duree_v2($d1, $d2){
+    return troncon_1($d1) + troncon_2($d1) + diff_annee_par_jour($d1, $d2) + troncon_4($d2) + troncon_5($d2);
+}
+
+
+function get_month($mm, $aaaa){
+    //$noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
+    $noms = array_values(NUM_DAYS);
+    //fdebug($noms);
+    $nom = nom_jour([1,$mm,$aaaa]);
+    
+    $ecart_deb = array_search($nom,$noms);
+    $nbr_jour = nombre_jour($mm, $aaaa);
+    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
+    $total = $ecart_deb + $nbr_jour + $ecart_fin;
+
+    foreach($noms as $jr) printf("%3s", substr($jr, 0, 1));
+    echo "\n";
+    for($i=1, $k = 1; $i<=$total; $i++){
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
+            printf("%3s", $k++);
+        else
+            printf("%3s", "-");
+        if($i%7==0) echo "\n";
+    }
+}
+
 

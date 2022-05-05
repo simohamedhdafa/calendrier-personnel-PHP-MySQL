@@ -18,3 +18,13 @@
     background-color: #f328c7;
     padding: 10px;
 }
+/*  une possibilité:
+td.dimanche {
+    color: red;
+    background-color:chartreuse;
+}
+une autre possibilité : */
+td:last-child{
+    color: red;
+    background-color:chartreuse;
+}

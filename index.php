@@ -1,12 +1,10 @@
-<?php include 'functions.php'; /*get_month(5, 2032);*/ ?>
-<?php 
+<?php include 'functions.php'; 
+
     if(isset($_GET['month']) and $_GET['month']!=0) 
         header("Location: /calendrier_v0/mois.php?m=".$_GET['month']."&a=".$_GET['year']);
 
     $an = isset($_GET['year']) ? $_GET['year'] : 2022; 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,9 +23,9 @@
     <ul>
         <li>finaliser les fonctions de calcul exacte des dates, et le nom des jours</li>
         <li>style caractérisant la date d'aujourd'hui</li>
-        <li>couleur rouge pour les dimanches</li>
-        <li>abreger les noms des mois</li>
-        <li>finaliser le fonctionnement du form, la page d'un mois</li>
+        <li class="barre">couleur rouge pour les dimanches</li>
+        <li class="barre">abreger les noms des mois</li>
+        <li class="barre">finaliser le fonctionnement du form, la page d'un mois</li>
         <li>image de saison en filigrane ou sur les cotés</li>
     </ul> 
     <div class="formulaire">

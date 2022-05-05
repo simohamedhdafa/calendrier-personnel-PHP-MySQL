@@ -28,3 +28,12 @@ td:last-child{
     color: red;
     background-color:chartreuse;
 }
+
+li.barre{
+    text-decoration: line-through;
+}
+
+td.today {
+    text-decoration: overline;
+    font-weight: bold;
+}

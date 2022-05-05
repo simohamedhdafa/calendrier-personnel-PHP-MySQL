@@ -83,8 +83,19 @@ $fruits = array("d"=>"lemon", "a"=>"orange", "b"=>"banana", "x"=>"banana" , "c"=
 // si pas d'occ de la val ds le tab:
 if(array_search("bananas", $fruits)==false){
  echo "FALSE";
-}*/
+}
 
 $adresse = "17, avenue Alas, Haut Agdal, Rabat, Maroc";
 $t_adr = explode(',', $adresse);
 print_r($t_adr);
+
+$today = explode('-',date('5-1999'));
+print_r($today);
+
+if (date('d')==5) echo 'OUI';
+else echo 'NON';
+*/
+$aaaa = 2022;
+$mm = 5;
+if (date('Y') == date($aaaa) and date('m') == date($mm)) echo 'EGALE';
+else echo 'mauVAISSSSS';

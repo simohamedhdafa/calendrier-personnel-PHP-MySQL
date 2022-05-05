@@ -219,7 +219,7 @@ function afficher_mois_html_table($mm, $aaaa){
     $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
     $total = $ecart_deb + $nbr_jour + $ecart_fin;
     // construction dune table html contenant les données du mois
-    $nom_mois = $mois[$mm-1];
+    $nom_mois = abrv($mois[$mm-1]);
     $table_mois = <<<azerty
     <table>
         <caption>$nom_mois</caption>
@@ -313,6 +313,14 @@ function get_month($mm, $aaaa){
             printf("%3s", "-");
         if($i%7==0) echo "\n";
     }
+}
+
+// par Zak Ari
+function abrv($nom_mois){
+    if (strlen($nom_mois)<4) return $nom_mois.'.';
+    if (strpos($nom_mois,'e', 3)==3 or strpos($nom_mois,'o',3)==3 or strpos($nom_mois,'i',3)==3)
+        return substr($nom_mois, 0, 3).".";
+    return substr($nom_mois, 0,4);    
 }
 
 

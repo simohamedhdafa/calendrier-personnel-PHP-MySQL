@@ -96,6 +96,13 @@ if (date('d')==5) echo 'OUI';
 else echo 'NON';
 */
 $aaaa = 2022;
-$mm = 5;
-if (date('Y') == date($aaaa) and date('m') == date($mm)) echo 'EGALE';
+$mm = 11;
+$ac = date('Y');
+$mc = date('m');
+$present_month = (date('Y') == $aaaa) && (date('m') == $mm) ? 1 : 0;
+var_dump($ac);
+var_dump($aaaa);
+var_dump($mc);
+var_dump($mm);
+if ($present_month) echo 'EGALE';
 else echo 'mauVAISSSSS';

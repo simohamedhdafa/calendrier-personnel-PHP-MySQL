@@ -220,7 +220,8 @@ function afficher_mois_html_table($mm, $aaaa){
     $total = $ecart_deb + $nbr_jour + $ecart_fin;
     // construction dune table html contenant les données du mois
     $nom_mois = abrv($mois[$mm-1]);
-    $class_today = date('Y') == date($aaaa) and date('m') == date($mm) ? true : false;
+    $present_month = date('Y') == $aaaa && date('m') == $mm ? true : false; // && plus prio que ?
+    // and moins prio que ?
     $table_mois = <<<azerty
     <table>
         <caption>$nom_mois</caption>
@@ -238,13 +239,13 @@ function afficher_mois_html_table($mm, $aaaa){
         //$table_mois .= "<tr>";
         if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour){ 
             // si $i%7==0 : td est de classe dimanche
-            if ($i%7==0) 
-                if ($class_today and date('d')==$k) $table_mois .= '<td class="dimanche today">'.$k++."</td>";
+            if ($i%7==0){ 
+                if ($present_month and date('d')==$k) $table_mois .= '<td class="dimanche today">'.$k++."</td>";
                 else $table_mois .= '<td class="dimanche">'.$k++."</td>";
             // else :
-            else{
+            }else{
                 // $table_mois .= "<td>".$k++."</td>";
-                if ($class_today and date('d')==$k) $table_mois .= '<td class="today">'.$k++."</td>";
+                if ($present_month and date('d')==$k) $table_mois .= '<td class="today">'.$k++."</td>";
                 else $table_mois .= "<td>".$k++."</td>";
             } 
         }else{

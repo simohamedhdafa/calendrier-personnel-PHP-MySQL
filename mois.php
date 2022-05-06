@@ -38,6 +38,8 @@
             <input type="submit">
         </form>
     </div>
-    <?php echo afficher_mois_html_table($_GET['m'], $_GET['a']); ?>
+    <div class="mois">
+        <?php echo afficher_mois_html_table($_GET['m'], $_GET['a']); ?>
+    </div>
 </body>
 </html>

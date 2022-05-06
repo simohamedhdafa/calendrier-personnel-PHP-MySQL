@@ -37,3 +37,10 @@ td.today {
     text-decoration: overline;
     font-weight: bold;
 }
+
+table {
+    background-image: url("imgs/summer.jpg");
+    background-repeat:no-repeat;
+    background-position: center;
+    background-size: cover;
+}

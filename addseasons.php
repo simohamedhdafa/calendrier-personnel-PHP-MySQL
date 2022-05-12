@@ -1,18 +1,19 @@
 <?php 
+    $confirmation = false;
     if(isset($_GET['envoyer']) && $_GET['envoyer']=="ok"){
-
+        $confirmation = "Données envoyées avec succès";
         // validation des donnée
         // ecriture dans le csv
         $filename = 'conf/seasons.csv';
         $f = fopen($filename, 'w');
         if ($f === false) die('Error opening the file ' . $filename);
-        $seasones = array(
+        $seasons = array(
             'winter' => array($_GET['startWinter'], $_GET['endWinter']),
             'spring' => array($_GET['startSpring'], $_GET['endSpring']),
             'summer' => array($_GET['startSummer'], $_GET['endSummer']),
             'autumn' => array($_GET['startAutumn'], $_GET['endAutumn'])
         );
-        foreach($seasones as $k=>$v){
+        foreach($seasons as $k=>$v){
             fputcsv($f, [$k, $v[0], $v[1]]);
         }
         fclose($f);
@@ -27,6 +28,7 @@
     <title>editer les saisons</title>
 </head>
 <body>
+    <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
     <form action="#" method="get">
         <?php 
             $filename = 'conf/seasons.csv';

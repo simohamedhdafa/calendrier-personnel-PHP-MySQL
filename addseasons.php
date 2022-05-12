@@ -37,55 +37,62 @@
     <title>editer les saisons</title>
 </head>
 <body>
+    <h1>TP Calendrier personnel</h1>
+    <ul>
+        <li><a href="index.php">Accueil</a></li>
+        <li><a href="addseasons.php">Editer saisons</a></li>
+    </ul> 
+    <div class="formulaire">
     <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
-    <form action="#" method="get">
-        <?php 
-            $exists = true;
-            if($validata===false){
-                $seasons = array();
-                if (file_exists($filename)) {
-                    $f = fopen($filename, 'r');
+        <form action="#" method="get">
+            <?php 
+                $exists = true;
+                if($validata===false){
+                    $seasons = array();
+                    if (file_exists($filename)) {
+                        $f = fopen($filename, 'r');
 
-                    if ($f === false) {
-                        die('Cannot open the file ' . $filename);
+                        if ($f === false) {
+                            die('Cannot open the file ' . $filename);
+                        }
+                        // read each line in CSV file at a time
+                        while (($row = fgetcsv($f)) !== false) {
+                            $saisons[] = $row;
+                        }
+                        fclose($f);
+                    } else {
+                        $exists = false;
                     }
-                    // read each line in CSV file at a time
-                    while (($row = fgetcsv($f)) !== false) {
-                        $saisons[] = $row;
+                }else{
+                    foreach($seasons as $k=>$v){
+                        $saisons[] = [$k,$v[0], $v[1]];
                     }
-                    fclose($f);
-                } else {
-                    $exists = false;
                 }
-            }else{
-                foreach($seasons as $k=>$v){
-                    $saisons[] = [$k,$v[0], $v[1]];
-                }
-            }
+                
+            ?>
+            <labet>winter : from </labet>
+            <input type="date" required name="startWinter" <?php if($exists) echo 'value="'.$saisons[0][1].'"'; ?>>
+            <labet> to </labet>
+            <input type="date" required name="endWinter" <?php if($exists) echo 'value="'.$saisons[0][2].'"'; ?>><br>
+
+            <labet>spring : from </labet>
+            <input type="date" required name="startSpring" <?php if($exists) echo 'value="'.$saisons[1][1].'"'; ?>>
+            <labet> to </labet>
+            <input type="date" required name="endSpring" <?php if($exists) echo 'value="'.$saisons[1][2].'"'; ?>><br>
+
+            <labet>summer : from </labet>
+            <input type="date" required name="startSummer" <?php if($exists) echo 'value="'.$saisons[2][1].'"'; ?>>
+            <labet> to </labet>
+            <input type="date" required name="endSummer" <?php if($exists) echo 'value="'.$saisons[2][2].'"'; ?>><br>
             
-        ?>
-        <labet>winter : from </labet>
-        <input type="date" required name="startWinter" <?php if($exists) echo 'value="'.$saisons[0][1].'"'; ?>>
-        <labet> to </labet>
-        <input type="date" required name="endWinter" <?php if($exists) echo 'value="'.$saisons[0][2].'"'; ?>><br>
-
-        <labet>spring : from </labet>
-        <input type="date" required name="startSpring" <?php if($exists) echo 'value="'.$saisons[1][1].'"'; ?>>
-        <labet> to </labet>
-        <input type="date" required name="endSpring" <?php if($exists) echo 'value="'.$saisons[1][2].'"'; ?>><br>
-
-        <labet>summer : from </labet>
-        <input type="date" required name="startSummer" <?php if($exists) echo 'value="'.$saisons[2][1].'"'; ?>>
-        <labet> to </labet>
-        <input type="date" required name="endSummer" <?php if($exists) echo 'value="'.$saisons[2][2].'"'; ?>><br>
-        
-        <labet>autumn : from </labet>
-        <input type="date" required name="startAutumn" <?php if($exists) echo 'value="'.$saisons[3][1].'"'; ?>>
-        <labet> to </labet>
-        <input type="date" required name="endAutumn" <?php if($exists) echo 'value="'.$saisons[3][2].'"'; ?>><br>
-        <input type="submit" name="envoyer" value="ok">
-        <input type="reset">
-    </form>
-    <p><?php if($validata!==false) echo $validata; ?></p>
+            <labet>autumn : from </labet>
+            <input type="date" required name="startAutumn" <?php if($exists) echo 'value="'.$saisons[3][1].'"'; ?>>
+            <labet> to </labet>
+            <input type="date" required name="endAutumn" <?php if($exists) echo 'value="'.$saisons[3][2].'"'; ?>><br>
+            <input type="submit" name="envoyer" value="ok">
+            <input type="reset">
+        </form>
+        <p><?php if($validata!==false) echo $validata; ?></p>
+    </div>
 </body>
 </html>

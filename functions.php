@@ -59,7 +59,9 @@ function est_valide($d){ //O(1)
 }
 
 function fdebug($tab){
+    echo "<pre>";
     print_r($tab);
+    echo "</pre>";
     die('END.');
 }
 
@@ -331,6 +333,32 @@ function abrv($nom_mois){
     return substr($nom_mois, 0,4);    
 }
 
+function sorted($t){
+    $sorted = true;
+    for($i=1; $i<=7; $i++){
+        if($t[$i-1]>=$t[$i]){
+            $sorted = false;
+            break;
+        }
+    }
+    return $sorted;
+}
+
 function validerform($data){
-    return true;
+    $valide = true;
+    $dates = array();
+    foreach($data as $v){
+        $dates[] = $v[0];
+        $dates[] = $v[1];
+    }
+    // dates triées
+    if(sorted($dates)){
+        // etndue de saison entre 3 et 4 mois 
+        // fin saison + 1 = debut saison suivante
+        // autre
+    }else{
+        $valide = false;
+    }
+     
+    return $valide;
 }

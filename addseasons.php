@@ -1,21 +1,21 @@
 <?php 
     include 'functions.php'; 
+    $filename = 'conf/seasons.csv';
     $seasons = array();
     $saisons = array();
     $confirmation = false;
     $validata = false;
     if(isset($_GET['envoyer']) && $_GET['envoyer']=="ok"){
         // validation des donnée
-            $seasons = array(
-                'winter' => array($_GET['startWinter'], $_GET['endWinter']),
-                'spring' => array($_GET['startSpring'], $_GET['endSpring']),
-                'summer' => array($_GET['startSummer'], $_GET['endSummer']),
-                'autumn' => array($_GET['startAutumn'], $_GET['endAutumn'])
-            );
-        if(validerform($_GET)){
+        $seasons = array(
+            'winter' => array($_GET['startWinter'], $_GET['endWinter']),
+            'spring' => array($_GET['startSpring'], $_GET['endSpring']),
+            'summer' => array($_GET['startSummer'], $_GET['endSummer']),
+            'autumn' => array($_GET['startAutumn'], $_GET['endAutumn'])
+        );
+        if(validerform($seasons)){
             $confirmation = "Données envoyées avec succès";
             // ecriture dans le csv
-            $filename = 'conf/seasons.csv';
             $f = fopen($filename, 'w');
             if ($f === false) die('Error opening the file ' . $filename);
             foreach($seasons as $k=>$v){
@@ -40,9 +40,8 @@
     <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
     <form action="#" method="get">
         <?php 
+            $exists = true;
             if($validata===false){
-                $filename = 'conf/seasons.csv';
-                $exists = true;
                 $seasons = array();
                 if (file_exists($filename)) {
                     $f = fopen($filename, 'r');
@@ -87,5 +86,6 @@
         <input type="submit" name="envoyer" value="ok">
         <input type="reset">
     </form>
+    <p><?php if($validata!==false) echo $validata; ?></p>
 </body>
 </html>

@@ -1,22 +1,31 @@
 <?php 
+    include 'functions.php'; 
+    $seasons = array();
+    $saisons = array();
     $confirmation = false;
+    $validata = false;
     if(isset($_GET['envoyer']) && $_GET['envoyer']=="ok"){
-        $confirmation = "Données envoyées avec succès";
         // validation des donnée
-        // ecriture dans le csv
-        $filename = 'conf/seasons.csv';
-        $f = fopen($filename, 'w');
-        if ($f === false) die('Error opening the file ' . $filename);
-        $seasons = array(
-            'winter' => array($_GET['startWinter'], $_GET['endWinter']),
-            'spring' => array($_GET['startSpring'], $_GET['endSpring']),
-            'summer' => array($_GET['startSummer'], $_GET['endSummer']),
-            'autumn' => array($_GET['startAutumn'], $_GET['endAutumn'])
-        );
-        foreach($seasons as $k=>$v){
-            fputcsv($f, [$k, $v[0], $v[1]]);
+            $seasons = array(
+                'winter' => array($_GET['startWinter'], $_GET['endWinter']),
+                'spring' => array($_GET['startSpring'], $_GET['endSpring']),
+                'summer' => array($_GET['startSummer'], $_GET['endSummer']),
+                'autumn' => array($_GET['startAutumn'], $_GET['endAutumn'])
+            );
+        if(validerform($_GET)){
+            $confirmation = "Données envoyées avec succès";
+            // ecriture dans le csv
+            $filename = 'conf/seasons.csv';
+            $f = fopen($filename, 'w');
+            if ($f === false) die('Error opening the file ' . $filename);
+            foreach($seasons as $k=>$v){
+                fputcsv($f, [$k, $v[0], $v[1]]);
+            }
+            fclose($f);
+        }else{
+            $validata = "Attention, les données saisies ne sont pas valide...";
         }
-        fclose($f);
+        
     }
 ?>
 <!DOCTYPE html>
@@ -31,43 +40,50 @@
     <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
     <form action="#" method="get">
         <?php 
-            $filename = 'conf/seasons.csv';
-            $exists = true;
-            $seasons = array();
-            if (file_exists($filename)) {
-                $f = fopen($filename, 'r');
+            if($validata===false){
+                $filename = 'conf/seasons.csv';
+                $exists = true;
+                $seasons = array();
+                if (file_exists($filename)) {
+                    $f = fopen($filename, 'r');
 
-                if ($f === false) {
-                    die('Cannot open the file ' . $filename);
+                    if ($f === false) {
+                        die('Cannot open the file ' . $filename);
+                    }
+                    // read each line in CSV file at a time
+                    while (($row = fgetcsv($f)) !== false) {
+                        $saisons[] = $row;
+                    }
+                    fclose($f);
+                } else {
+                    $exists = false;
                 }
-                // read each line in CSV file at a time
-                while (($row = fgetcsv($f)) !== false) {
-                    $seasons[] = $row;
+            }else{
+                foreach($seasons as $k=>$v){
+                    $saisons[] = [$k,$v[0], $v[1]];
                 }
-                fclose($f);
-            } else {
-                $exists = false;
             }
+            
         ?>
         <labet>winter : from </labet>
-        <input type="date" required name="startWinter" <?php if($exists) echo 'value="'.$seasons[0][1].'"'; ?>>
+        <input type="date" required name="startWinter" <?php if($exists) echo 'value="'.$saisons[0][1].'"'; ?>>
         <labet> to </labet>
-        <input type="date" required name="endWinter" <?php if($exists) echo 'value="'.$seasons[0][2].'"'; ?>><br>
+        <input type="date" required name="endWinter" <?php if($exists) echo 'value="'.$saisons[0][2].'"'; ?>><br>
 
         <labet>spring : from </labet>
-        <input type="date" required name="startSpring" <?php if($exists) echo 'value="'.$seasons[1][1].'"'; ?>>
+        <input type="date" required name="startSpring" <?php if($exists) echo 'value="'.$saisons[1][1].'"'; ?>>
         <labet> to </labet>
-        <input type="date" required name="endSpring" <?php if($exists) echo 'value="'.$seasons[1][2].'"'; ?>><br>
+        <input type="date" required name="endSpring" <?php if($exists) echo 'value="'.$saisons[1][2].'"'; ?>><br>
 
         <labet>summer : from </labet>
-        <input type="date" required name="startSummer" <?php if($exists) echo 'value="'.$seasons[2][1].'"'; ?>>
+        <input type="date" required name="startSummer" <?php if($exists) echo 'value="'.$saisons[2][1].'"'; ?>>
         <labet> to </labet>
-        <input type="date" required name="endSummer" <?php if($exists) echo 'value="'.$seasons[2][2].'"'; ?>><br>
+        <input type="date" required name="endSummer" <?php if($exists) echo 'value="'.$saisons[2][2].'"'; ?>><br>
         
         <labet>autumn : from </labet>
-        <input type="date" required name="startAutumn" <?php if($exists) echo 'value="'.$seasons[3][1].'"'; ?>>
+        <input type="date" required name="startAutumn" <?php if($exists) echo 'value="'.$saisons[3][1].'"'; ?>>
         <labet> to </labet>
-        <input type="date" required name="endAutumn" <?php if($exists) echo 'value="'.$seasons[3][2].'"'; ?>><br>
+        <input type="date" required name="endAutumn" <?php if($exists) echo 'value="'.$saisons[3][2].'"'; ?>><br>
         <input type="submit" name="envoyer" value="ok">
         <input type="reset">
     </form>

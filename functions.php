@@ -331,4 +331,6 @@ function abrv($nom_mois){
     return substr($nom_mois, 0,4);    
 }
 
-
+function validerform($data){
+    return true;
+}

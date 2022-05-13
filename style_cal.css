@@ -1,0 +1,133 @@
+body{
+  background-image: url(City.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+   background-size: cover; 
+   color: aliceblue;
+   background-attachment: fixed;
+   height: 2000px;
+
+}
+  
+.grid-container {
+  margin-left: 180px;
+  width: 70%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: rgba(0,0,0, 0.4);
+  padding: 10px;
+}
+.grid-item {
+  background-color: rgba(0,0,0, 0.4);
+  border: 1px solid rgba(0,0,0, 0.4);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+.formulaire {
+  width: 70%;
+  background-color: rgba(0,0,0, 0.4);
+  padding: 10px;
+  margin-left: 180px;
+}
+.calendrier {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  margin: 0px;
+  padding: 0px;
+}
+
+.month-row{
+  height:200px;
+}
+.col-1 {
+  width: 31%;
+  float:left; 
+  margin: 2px;
+  padding: 3px;
+}
+.col-2 {
+  width: 31%;
+  float:left;
+  margin: 2px;
+  padding: 3px;
+}
+.col-3 {
+  width: 31%;
+  float:left;
+  margin: 2px;
+  padding: 3px;
+}
+.h1 {
+  color: green;
+}
+
+.gallery1 {
+    margin: 25px;
+    border: 1px solid rgb(47, 97, 213);
+    float: left;
+    width: 180px;
+  }
+.gallery2 {
+    margin: 25px;
+    border: 1px solid rgb(47, 97, 213);
+    float: left;
+    width: 180px;
+  }
+.gallery3 {
+    margin: 25px;
+    border: 1px solid rgb(47, 97, 213);
+    float: left;
+    width: 180px;
+  }
+.gallery4 {
+    margin: 25px;
+    border: 1px solid rgb(47, 97, 213);
+    float: left;
+    width: 180px;
+  }
+.a:hover{
+  background-image: url(hiver.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.b:hover{
+  background-image: url(Printemp.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.c:hover{
+  background-image: url(été.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.d:hover{
+  background-image: url(Automne.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.r{
+  color: red;
+}
+td:last-child{
+    color: red;
+    background-color:white
+}
+td.today {
+  background-color:black
+  
+}
+
+input[type="date"]:valid{
+  border: 3px solid green;
+}
+
+input[type="date"]:invalid{
+  
+  border: 3px solid red;
+}

@@ -15,18 +15,13 @@
 }
 .formulaire {
     width: 70%;
-    background-color: #f328c7;
+    background-color:burlywood;
     padding: 10px;
 }
-/*  une possibilité:
-td.dimanche {
-    color: red;
-    background-color:chartreuse;
-}
-une autre possibilité : */
+
 td:last-child{
     color: red;
-    background-color:chartreuse;
+    /*background-color:chartreuse;*/
 }
 
 li.barre{
@@ -38,16 +33,17 @@ td.today {
     font-weight: bold;
 }
 
-table.bgimge {
+.bgimge {
     background-image: url("imgs/summer.jpg");
 }
-table.bgimga {
+
+.bgimga {
     background-image: url("imgs/autumn.jpg");
 }
-table.bgimgh {
+.bgimgh {
     background-image: url("imgs/winter.jpg");
 }
-table.bgimgp {
+.bgimgp {
     background-image: url("imgs/spring.jpg");
 }
 
@@ -58,25 +54,29 @@ table {
 }
 
 ul {
-list-style-type: none;
-margin: 0;
-padding: 0;
-overflow: hidden;
-background-color: #333333;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
 }
 
 li {
-float: left;
+    float: left;
 }
 
 li a {
-display: block;
-color: white;
-text-align: center;
-padding: 16px;
-text-decoration: none;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
 }
 
 li a:hover {
-background-color: #111111;
+    background-color: #111111;
+}
+
+img {
+    opacity:50%;
 }

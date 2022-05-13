@@ -38,8 +38,20 @@ td.today {
     font-weight: bold;
 }
 
-table {
+table.bgimge {
     background-image: url("imgs/summer.jpg");
+}
+table.bgimga {
+    background-image: url("imgs/autumn.jpg");
+}
+table.bgimgh {
+    background-image: url("imgs/winter.jpg");
+}
+table.bgimgp {
+    background-image: url("imgs/spring.jpg");
+}
+
+table {
     background-repeat:no-repeat;
     background-position: center;
     background-size: cover;

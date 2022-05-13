@@ -224,11 +224,29 @@ function afficher_mois_html_table($mm, $aaaa){
     $nom_mois = abrv($mois[$mm-1]);
     $present_month = date('Y') == $aaaa && date('m') == $mm ? true : false; // && plus prio que ?
     // and moins prio que ?
-    $table_mois = <<<azerty
-    <table>
-        <caption>$nom_mois</caption>
-        <tr>
-    azerty;
+    $css = '';
+    switch($mm){
+        case 9:
+        case 10:
+        case 11:
+            $css = 'class="bgimga"';
+            break;
+        case 12:
+        case 1:
+        case 2:
+            $css = 'class="bgimgh"';
+            break;
+        case 3:
+        case 4:
+        case 5:
+            $css = 'class="bgimgp"';
+            break;
+        default:
+            $css = 'class="bgimge"';
+    }
+    $table_mois = '<table '.$css.'>
+        <caption>'.$nom_mois.'</caption>
+        <tr>';
     // la prmiere ligne contient les initiales des noms d jour de la sem
     foreach($noms as $jr) $table_mois .= "<td>".substr($jr, 0, 1)."</td>" ;
     $table_mois .= <<<azerto

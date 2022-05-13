@@ -1,7 +1,7 @@
 <?php include 'functions.php'; 
     if(isset($_GET['month']) and $_GET['month']!=0) 
         header("Location: /calendrier_v0/mois.php?m=".$_GET['month']."&a=".$_GET['year']);
-
+    // obtenir une année (uiliser date() ou time())
     $an = isset($_GET['year']) ? $_GET['year'] : 2022; 
 ?>
 

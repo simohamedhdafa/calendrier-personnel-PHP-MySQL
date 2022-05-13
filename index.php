@@ -1,5 +1,4 @@
 <?php include 'functions.php'; 
-
     if(isset($_GET['month']) and $_GET['month']!=0) 
         header("Location: /calendrier_v0/mois.php?m=".$_GET['month']."&a=".$_GET['year']);
 

@@ -1,6 +1,49 @@
 <?php 
-    if(isset($_POST['submit'])){
-        fdebug($_POST);
+    include 'functions.php';
+    
+
+    if(isset($_POST['envoyer']) && $_POST['envoyer']=="ok"){
+        $target_dir = "imgs/";
+        $target_file = $target_dir . $_POST["season"] . ".jpg";
+        //$target_file = "imgs/wwinter.jpg";
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        //fdebug($target_file);
+        //fdebug($_FILES);
+        $check = getimagesize($_FILES["myfile"]["tmp_name"]);
+        if($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+        //fdebug($_FILES);
+        // Check file size
+        if ($_FILES["myfile"]["size"] > 500000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["myfile"]["tmp_name"], $target_file)) {
+                echo "The file ". htmlspecialchars( basename( $_FILES["myfile"]["name"])). " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+
     }
 ?>
 <!DOCTYPE html>
@@ -23,43 +66,39 @@
     <div class="formulaire">
         <table>
             <tr>
-                <td>Winter</td>
                 <td><img src="imgs/winter.jpg" alt="#" width="100" height="100"></td>
                 <td>
                     <form action="#" method="post" enctype="multipart/form-data">
+                        <input type="text" name="season" value="winter" hidden>
                         <label for="myfile">Select an image:</label>
-                        <input type="file" name="myfile"><br><br>
-                        <input type="submit" value="Submit">
+                        <input type="file" name="myfile"><input type="submit" name="envoyer" value="ok">
                     </form>
                 </td>
             </tr><tr>
-                <td>Spring</td>
                 <td><img src="imgs/spring.jpg" alt="#" width="100" height="100"></td>
                 <td>
                     <form action="#" method="post" enctype="multipart/form-data">
+                        <input type="text" name="season" value="spring" hidden>
                         <label for="myfile">Select an image:</label>
-                        <input type="file" name="myfile"><br><br>
-                        <input type="submit" value="Submit">
+                        <input type="file" name="myfile"><input type="submit" name="envoyer" value="ok">
                     </form>
                 </td>
             </tr><tr>
-                <td>Summer</td>
                 <td><img src="imgs/summer.jpg" alt="#" width="100" height="100"></td>
                 <td>
                     <form action="#" method="post" enctype="multipart/form-data">
+                        <input type="text" name="season" value="summer" hidden>
                         <label for="myfile">Select an image:</label>
-                        <input type="file" name="myfile"><br><br>
-                        <input type="submit" value="Submit">
+                        <input type="file" name="myfile"><input type="submit" name="envoyer" value="ok">
                     </form>
                 </td>
             </tr><tr>
-                <td>Autumn</td>
                 <td><img src="imgs/autumn.jpg" alt="#" width="100" height="100"></td>
                 <td>
                     <form action="#" method="post" enctype="multipart/form-data">
+                        <input type="text" name="season" value="autumn" hidden>
                         <label for="myfile">Select an image:</label>
-                        <input type="file" name="myfile"><br><br>
-                        <input type="submit" value="Submit">
+                        <input type="file" name="myfile"><input type="submit" name="envoyer" value="ok">
                     </form>
                 </td>
             </tr>

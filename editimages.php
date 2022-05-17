@@ -1,7 +1,5 @@
 <?php 
     include 'functions.php';
-    
-
     if(isset($_POST['envoyer']) && $_POST['envoyer']=="ok"){
         $target_dir = "imgs/";
         $target_file = $target_dir . $_POST["season"] . ".jpg";
@@ -70,7 +68,7 @@
                 <td>
                     <form action="#" method="post" enctype="multipart/form-data">
                         <input type="text" name="season" value="winter" hidden>
-                        <label for="myfile">Select an image:</label>
+                        <label for="myfile">Winter:</label>
                         <input type="file" name="myfile"><input type="submit" name="envoyer" value="ok">
                     </form>
                 </td>

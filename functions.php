@@ -380,3 +380,11 @@ function validerform($data){
      
     return $valide;
 }
+
+function validation_data($t){
+    return true;
+}
+
+function validation_uploaded_file($f){
+    return true;
+}

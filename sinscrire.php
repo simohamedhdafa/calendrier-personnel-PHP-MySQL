@@ -1,6 +1,34 @@
-<?php include 'functions.php'; 
-    if (isset($_POST['envoyer'])){
-        fdebug($_POST);
+<?php 
+    include 'functions.php'; 
+    $valid_form = true;
+    $err_msg = "";
+    $inputs = array();
+    if (isset($_POST['envoyer']) && $_POST['envoyer']=='creer'){
+        foreach ($_POST as $k=>$v) $inputs[$k] = $v;
+        foreach ($_FILES as $k=>$v) $inputs[$k] = $v;
+        // validation data
+        if(!validation_data($inputs)){
+            // champs invalides ?
+            $err_msg = "erreur partie data!";
+            $valid_form = false;
+        }
+        // validation file
+        if(!validation_uploaded_file($_FILES)){
+            // error ?
+            $err_msg = "erreur partie file!";
+            $valid_form = false;
+        }
+        if($valid_form){
+            // connection à la base de données
+            // ajout de nouveau utilisateur : 
+            /*
+            INSERT INTO `utilisateur` 
+            (`id`, `nom`, `prenom`, `naissance`, `email`, `password`, `creation`, `etat`, `photo`, `remarques`) 
+            VALUES 
+            (, '', '', '', '', '', '', '', '', '')
+            */
+            // envoie lien de confirmation 
+        }
     }
 ?>
 <!DOCTYPE html>

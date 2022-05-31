@@ -362,6 +362,9 @@ function sorted($t){
     return $sorted;
 }
 
+
+/* validations */
+
 function validerform($data){
     $valide = true;
     $dates = array();
@@ -381,8 +384,97 @@ function validerform($data){
     return $valide;
 }
 
-function validation_data($t){
+function valide_nom($name, $msgs){
+    // taille entre 2 et 50 : strlen
+    if(strlen($name)<2 or strlen($name)>50){
+        $msgs['nom'] = "taille nom ou prenom invalide";
+        return false;
+    } 
+    // supprimer les espaces successifs ! 
+    
+    // composé de lettre seulement, insensible à la casse 
+    $letters = explode(',', "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z, ");
+    for($i=0; $i<strlen($name); $i++){
+        if(!in_array($name[$i], $letters)){
+            $msgs['nom'] = "caractère invalide dans nom ou prenom";
+            return false;
+        }
+    }
+    // chaine valide
     return true;
+}
+
+function valide_date_naissance($date_naissance){
+    // une date
+    // superieure à 18 ans et inferieure à 200 ans
+    return true;
+}
+
+function valide_email($email, $msgs){
+    if(filter_var($email, FILTER_VALIDATE_EMAIL)!==false){
+        return true;
+    }else{
+        $msgs['email'] = "email invalide";
+        return false;
+    }
+}
+
+function valide_password($password, $verification, $msgs){
+
+    if($password!==$verification){
+        $msgs['password'] = "verivication est different de password";
+        echo $msgs['password'];
+        return false;
+    } 
+    //die('premier filtre passé!');
+
+    if(strlen($password)<8 or strlen($password)>16){
+        $msgs['password'] = "la taille du mot de passe n'est pas respecté";
+        echo $msgs['password'];
+        return false;
+    } 
+    //die('2eme filtre passé!');
+
+    $lower = "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
+    $upper = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"; 
+    $digits = "0,1,2,3,4,5,6,7,8,9";
+    $symbols = "+,-,*,/,%,@,-,_";
+    $allowed = explode(',', $lower.','.$upper.','.$digits.','.$symbols);
+    for($i=0; $i<strlen($password); $i++){
+        if(!in_array($password[$i], $allowed)){
+            $msgs['password'] = "utilisation de caractere non autorisé dans le mot de passe";
+            echo $msgs['password'];
+            return false;
+        }
+    }
+    //die('3eme filtre passé!');    
+    $nbr_lowers = count(array_intersect(str_split($password), explode(',', $lower)));
+    $nbr_uppers = count(array_intersect(str_split($password), explode(',', $upper)));
+    $nbr_digits = count(array_intersect(str_split($password), explode(',', $digits)));
+    $nbr_symbols = count(array_intersect(str_split($password), explode(',', $symbols)));
+    if(($nbr_lowers * $nbr_uppers * $nbr_digits * $nbr_symbols)==0){
+        $msgs['password'] = "au moins une minuscule, majiscule, chiffre, lettre et symbole special are required";
+        echo $msgs['password'];
+        return false;
+    }
+    //die('4eme filtre passé!');  
+    // d autres regles ?    
+    return true;
+}
+
+function validation_data($t, $msgs){
+    // validation data :
+    // nom valide ?
+    $valide = valide_nom($t['nom'], $msgs);
+    // prenom valide ?
+    if($valide) $valide = valide_nom($t['prenom'], $msgs);
+    // date naissance valide ?
+    if($valide) $valide = valide_date_naissance($t['naissance']);
+    // email valide ?
+    if($valide) $valide = valide_email($t['email'], $msgs);
+    // password valide ?
+    if($valide) $valide = valide_password($t['password'], $t['verification'], $msgs);
+    return $valide;
 }
 
 function validation_uploaded_file($f){

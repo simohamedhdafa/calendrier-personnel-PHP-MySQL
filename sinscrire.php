@@ -1,7 +1,19 @@
 <?php 
     include 'functions.php'; 
-
-    // etablir une connection à la base de donnée :
+    // on se connecte à la base de données
+    $user = "root";
+    $pass = "";
+    $db = "calendrier";
+    $host = "localhost";
+    try {
+        $pdo = new PDO("mysql:host=".$host.";dbname=".$db, $user, $pass);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        echo "<p>Bien connecté à la BD</p>";
+        //$pdostat = $pdo->query("COUCOU") ;
+    }catch (PDOException $e) {
+        echo "<p>ERREUR : ".$e->getMessage() ;
+        die('TERMINE ICI.');
+    }
 
     $valid_form = true;
     $err_msg = "";
@@ -31,13 +43,22 @@
             echo "<p>pret à alimenter la base de données...</p><br>";
             // connection à la base de données (voir plus haut)
             // ajout de nouveau utilisateur : 
-            /*
-            INSERT INTO `utilisateur` 
-            (`id`, `nom`, `prenom`, `naissance`, `email`, `password`, `creation`, `etat`, `photo`, `remarques`) 
+            $token = md5($_POST['email']).rand(10,9999);
+            $sql = "INSERT INTO 
+            `utilisateur` (`nom`, `prenom`, `naissance`, `email`, `password`, `creation`, `etat`, `token`, `photo`, `remarques`) 
             VALUES 
-            (, '', '', '', '', '', '', '', '', '')
-            */
+            ('".$_POST["nom"]."', '".$_POST["prenom"]."', '".$_POST["naissance"]."', '".$_POST["email"]."', '".sha1($_POST["password"])."', '".date('Y-m-d')."', 'new', '".$token."', '".$_FILES["photo"]["name"]."', 'RAS')";
+            try{
+                $pdo->query($sql);
+            }catch(PDOException $e) {
+                echo "<p>ERREUR : ".$e->getMessage() ;
+                die('TERMINE ICI 2.');
+            }
+            
             // envoie lien de confirmation 
+            echo '<p>Informations bien enregistrées. Vous allez devoir activer votre compte bientôt.</p>';
+
+            
         }
     }
 ?>

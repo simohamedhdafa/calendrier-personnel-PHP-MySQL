@@ -39,12 +39,11 @@
 </head>
 <body>
     <h1>TP Calendrier personnel</h1>
-    <ul>
-        <li><a href="index.php">Accueil</a></li>
-        <li><a href="addseasons.php">Editer saisons</a></li>
-        <li><a href="editimages.php">Editer images</a></li>
-        <li><a href="#">s'inscrire</a></li>
-    </ul>  
+    <?php 
+        // include the menu script 
+        include "inc/menu.inc.php"; 
+        // 
+    ?>  
     <div class="formulaire">
     <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
         <form action="#" method="get">

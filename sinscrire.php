@@ -11,7 +11,7 @@
         echo "<p>Bien connecté à la BD</p>";
         //$pdostat = $pdo->query("COUCOU") ;
     }catch (PDOException $e) {
-        echo "<p>ERREUR : ".$e->getMessage() ;
+        echo "<p>ERREUR : ".$e->getMessage()."</p>";
         die('TERMINE ICI.');
     }
 
@@ -40,25 +40,34 @@
             $valid_form = false;
         }
         if($valid_form){
-            echo "<p>pret à alimenter la base de données...</p><br>";
-            // connection à la base de données (voir plus haut)
-            // ajout de nouveau utilisateur : 
-            $token = md5($_POST['email']).rand(10,9999);
-            $sql = "INSERT INTO 
-            `utilisateur` (`nom`, `prenom`, `naissance`, `email`, `password`, `creation`, `etat`, `token`, `photo`, `remarques`) 
-            VALUES 
-            ('".$_POST["nom"]."', '".$_POST["prenom"]."', '".$_POST["naissance"]."', '".$_POST["email"]."', '".sha1($_POST["password"])."', '".date('Y-m-d')."', 'new', '".$token."', '".$_FILES["photo"]["name"]."', 'RAS')";
             try{
-                $pdo->query($sql);
+                echo "<p>pret à alimenter la base de données ?</p><br>";
+                // connection à la base de données (voir plus haut)
+                // compter le nombre d'enregistrements avec le même 'email' !
+                $sql = "SELECT COUNT(email) FROM `utilisateur` WHERE email = '".$_POST['email']."'";
+                //die("$sql");
+                $res = $pdo->query($sql);
+                $res = $res->fetch(PDO::FETCH_NUM);
+                if($res[0]>=1){
+                    // un compte avec le même email adresse existe
+                }else{
+                    // ajout de nouveau utilisateur : 
+                    $token = md5($_POST['email']).rand(10,9999);
+                    $sql = "INSERT INTO 
+                    `utilisateur` (`nom`, `prenom`, `naissance`, `email`, `password`, `creation`, `etat`, `token`, `photo`, `remarques`) 
+                    VALUES 
+                    ('".$_POST["nom"]."', '".$_POST["prenom"]."', '".$_POST["naissance"]."', '".trim($_POST["email"])."', '".sha1($_POST["password"])."', '".date('Y-m-d')."', 'new', '".$token."', '".$_FILES["photo"]["name"]."', 'RAS')";
+                    $pdo->query($sql);
+                }
             }catch(PDOException $e) {
-                echo "<p>ERREUR : ".$e->getMessage() ;
+                echo "<p>ERREUR : ".$e->getMessage()."</p>";
                 die('TERMINE ICI 2.');
+            }finally{
+                // close connexion 
+                $pdo = null;
             }
-            
             // envoie lien de confirmation 
             echo '<p>Informations bien enregistrées. Vous allez devoir activer votre compte bientôt.</p>';
-
-            
         }
     }
 ?>
@@ -68,9 +77,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylecss.css">
     <title>s'inscrire</title>
 </head>
 <body>
+    <h1>TP Calendrier personnel</h1>
+    <?php 
+        // include the menu script 
+        include "inc/menu.inc.php"; 
+        // 
+    ?>
     <?php 
         if(!$valid_form){
             echo "<h3>".$err_msg."</h3><p>";

@@ -41,15 +41,16 @@
         }
         if($valid_form){
             try{
-                echo "<p>pret à alimenter la base de données ?</p><br>";
+                // echo "<p>pret à alimenter la base de données ?</p><br>";
                 // connection à la base de données (voir plus haut)
                 // compter le nombre d'enregistrements avec le même 'email' !
-                $sql = "SELECT COUNT(email) FROM `utilisateur` WHERE email = '".$_POST['email']."'";
+                $sql = "SELECT COUNT(email) FROM `utilisateur` WHERE email = '".trim($_POST['email'])."'";
                 //die("$sql");
                 $res = $pdo->query($sql);
                 $res = $res->fetch(PDO::FETCH_NUM);
                 if($res[0]>=1){
-                    // un compte avec le même email adresse existe
+                    // suggerer une page de récupération de mot de pass !
+                    die('Email deja utilisé, revenir ulterieurement !');
                 }else{
                     // ajout de nouveau utilisateur : 
                     $token = md5($_POST['email']).rand(10,9999);

@@ -480,3 +480,25 @@ function validation_data($t, $msgs){
 function validation_uploaded_file($f){
     return true;
 }
+
+// un autre exemple de fonctions de valisation des données formulaires
+function validation($data, $rules){
+    if($rules[1]=='not_empty'){
+        if($data===""){
+            return false;
+        }  
+    }
+    if($rules[0]=="email"){
+        return filter_var($data, FILTER_VALIDATE_EMAIL)!==false;
+    }
+    if($rules[0]=="password"){
+
+        $uppercase = preg_match('@[A-Z]@', $data);
+        $lowercase = preg_match('@[a-z]@', $data);
+        $number    = preg_match('@[0-9]@', $data);
+        $specialChars = preg_match('@[^\w]@', $data);
+
+        return !$uppercase || !$lowercase || !$number || !$specialChars || strlen($data) < 8 ? false : true;
+    }
+    return true;
+}

@@ -187,26 +187,6 @@ function nom_jour($d){
     return $noms[($index_nom_origine+$duree)%7];
 }
 
-function afficher_mois($mm, $aaaa){
-    $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
-    $nom = nom_jour([1,$mm,$aaaa]);
-    
-    $ecart_deb = array_search($nom,$noms);
-    $nbr_jour = nombre_jour($mm, $aaaa);
-    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
-    $total = $ecart_deb + $nbr_jour + $ecart_fin;
-
-    foreach($noms as $jr) printf("%3s", substr($jr, 0, 1));
-    echo "\n";
-    for($i=1, $k = 1; $i<=$total; $i++){
-        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
-            printf("%3s", $k++);
-        else
-            printf("%3s", "-");
-        if($i%7==0) echo "\n";
-    }
-}
-
 function endsWith($haystack, $needle) {
     $length = strlen($needle);
     return $length > 0 ? substr($haystack, -$length) === $needle : true;
@@ -279,6 +259,90 @@ function afficher_mois_html_table($mm, $aaaa){
     
     return $table_mois."</table>";
 
+}
+
+function afficher_mois($mm, $aaaa){
+    $noms = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
+    $nom = nom_jour([1,$mm,$aaaa]);
+    
+    $ecart_deb = array_search($nom,$noms);
+    $nbr_jour = nombre_jour($mm, $aaaa);
+    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$mm,$aaaa]),$noms);
+    $total = $ecart_deb + $nbr_jour + $ecart_fin;
+
+    foreach($noms as $jr) printf("%3s", substr($jr, 0, 1));
+    echo "\n";
+    for($i=1, $k = 1; $i<=$total; $i++){
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
+            printf("%3s", $k++);
+        else
+            printf("%3s", "-");
+        if($i%7==0) echo "\n";
+    }
+}
+
+function afficher_mois_as_bootstrap_card($m, $an){
+    $noms_jours = array("LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE");
+    $noms_mois = array("Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre");
+    $nom_jour = nom_jour([1,$m,$an]);
+    $nom_mois = abrv($noms_mois[$m-1]);
+    
+    $ecart_deb = array_search($nom_jour,$noms_jours);
+    $nbr_jour = nombre_jour($m, $an);
+    $ecart_fin = 6 - array_search(nom_jour([$nbr_jour,$m,$an]),$noms_jours);
+    $total = $ecart_deb + $nbr_jour + $ecart_fin;
+
+    // saisons figées
+    $img_sais_link = 'imgs/';
+    switch($m){
+        case 9:
+        case 10:
+        case 11:
+            $img_sais_link .= 'autumn.jpg';
+            break;
+        case 12:
+        case 1:
+        case 2:
+            $img_sais_link .= 'winter.jpg';
+            break;
+        case 3:
+        case 4:
+        case 5:
+            $img_sais_link .= 'spring.jpg';
+            break;
+        default:
+            $img_sais_link .= 'summer.jpg';
+    }
+
+    $s = '<div class="col">
+            <div class="card h-100">
+            <img src="'.$img_sais_link.'" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">'.$nom_mois.'</h5>
+                
+                <table class="table table-borderless">
+                <tr>';
+    foreach($noms_jours as $jr) $s .= '<td>'.substr($jr, 0, 1).'</td>';
+    $s .= '</tr>';
+    
+    
+    for($i=1, $k = 1; $i<=$total; $i++){
+        if(endsWith($s,'</tr>')) $s .= '<tr>';
+        if($i>$ecart_deb and $i<=$ecart_deb + $nbr_jour) 
+            $s .= '<td>'.$k++.'</td>'; //printf("%3s", $k++);
+        else
+            $s .= '<td>-</td>'; //printf("%3s", "-");
+        if($i%7==0) $s .= '</tr>';      
+    }
+    $s .= '</table>';      
+    $s .=  '</div>
+            <div class="card-footer">
+                <small class="text-muted">Remarques</small>
+            </div>
+            </div>
+        </div>';
+
+    return $s;
 }
 
 /* algorithme nouveau pour calcul écart entre dates */
@@ -502,3 +566,10 @@ function validation($data, $rules){
     }
     return true;
 }
+/* validation('sH123456@', array('password', 'not_empty'))
+if(validation('gh5241+-', array('password', 'not_empty'))){
+    echo 'True : la data est validee avec succes.';
+}else{
+    echo 'False : la data est non valide!';
+}
+*/

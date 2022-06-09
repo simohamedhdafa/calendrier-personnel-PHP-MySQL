@@ -6,8 +6,10 @@ if (isset($_POST['submit']) && $_POST['submit']=="ok"){
     /* tentative d'authentification */ 
     // récupération des données du formulaire et leur nettoyage
     $email = trim(htmlspecialchars($_POST['email']));
-    $password = trim(htmlspecialchars($_POST['email']));
-    // valisation des données du formulaire 
+    //fdebug($email);
+    $password = trim(htmlspecialchars($_POST['password']));
+    //fdebug($password);
+    // validation des données du formulaire 
     $valid_form = validation($email, array('email', 'not_empty')) && validation($password, array('password', 'not_empty'));
     if($valid_form){
         $password = sha1($password);
@@ -16,13 +18,27 @@ if (isset($_POST['submit']) && $_POST['submit']=="ok"){
             $pdo = new PDO("mysql:host=".$conf['host'].";dbname=".$conf['db'], $conf['user'], $conf['password']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             // verification du couple
-            $sql = "SELECT COUNT(email) email, nom, prenom, etat, photo FROM `utilisateur` WHERE email = '".$email."' AND password = '".$password."'";
+            $sql = "SELECT COUNT(email) as nbr_couple, email, nom, prenom, etat, photo FROM `utilisateur` WHERE email = '".$email."' AND password = '".$password."'";
             $res = $pdo->query($sql);
-            $res = $res->fetch(PDO::FETCH_NUM);
-            if($res[0]>=1){
+            $res = $res->fetch(PDO::FETCH_ASSOC);
+            //fdebug($res);
+            if($res['nbr_couple']>=1){
+                // authentification reussi
                 session_start();
-                fdebug($res);
                 // ajouter les information de session
+                $_SESSION['username'] = $res['nom']." ".$res['prenom'];
+                $_SESSION['email'] = $res['email'];
+                $_SESSION['role'] = $res['etat']; 
+                //fdebug($res);
+                if($_SESSION['role']=='admin'){
+                    header("Location: editimages.php");
+                }else{
+                    header("Location: index_.php");
+                }
+            }else{
+                // la combinaison (email,password) n'existe pas 
+                $message = "ERREUR : le mot de passe ou l'adresse mail entrée n'est pas correcte.";
+                header("Location: logout.php?m=".$message);
             }
         }catch(Exception $e){
             $message = "ERREUR : ".$e->getMessage();
@@ -49,8 +65,9 @@ if (isset($_POST['submit']) && $_POST['submit']=="ok"){
     <div class="container">
         <nav class="navbar bg-light">
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index_.php">
                 <img src="imgs/cal.png" alt="" width="30" height="24">
+                Accueil
                 </a>
             </div>
         </nav>

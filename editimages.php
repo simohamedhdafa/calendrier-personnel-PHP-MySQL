@@ -1,5 +1,13 @@
 <?php 
     include 'functions.php';
+    // session 
+    session_start();
+    // si !bonne session (admin)
+    if(!isset($_SESSION['role']) or $_SESSION['role']!='admin'){
+        // rediriger vers logout
+        header("Location: logout.php");
+    }
+
     if(isset($_POST['envoyer']) && $_POST['envoyer']=="ok"){
         $target_dir = "imgs/";
         $target_file = $target_dir . $_POST["season"] . ".jpg";

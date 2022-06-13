@@ -1,8 +1,11 @@
 <?php 
     include 'functions.php'; 
     session_start();
-    if(isset($_SESSION['email']))
-        echo "Bienvenu ".$_SESSION['username']." dans votre calendrier personnel<br>";
+    //if(isset($_SESSION['email']))
+    //    echo "Bienvenu ".$_SESSION['username']." dans votre calendrier personnel<br>";
+    permission_navigation($_SESSION, array('public', 'active', 'new', 'desactive'));
+
+    $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'public';
 
     if(isset($_GET['month']) and $_GET['month']!=0) 
         header("Location: /calendrier_v0/mois.php?m=".$_GET['month']."&a=".$_GET['year']);
@@ -29,11 +32,7 @@
         </div>
         <div class="row">
             <!-- As a heading -->
-            <nav class="navbar bg-light">
-            <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">Navbar</span>
-            </div>
-            </nav>
+            <?php echo navbar_bootstrap($role); ?>
         <div>
         <div class="row">
         <form class="row row-cols-lg-auto g-3 align-items-center" action="#" method="GET">

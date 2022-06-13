@@ -2,11 +2,7 @@
     include 'functions.php';
     // session 
     session_start();
-    // si !bonne session (admin)
-    if(!isset($_SESSION['role']) or $_SESSION['role']!='admin'){
-        // rediriger vers logout
-        header("Location: logout.php");
-    }
+    permission_navigation($_SESSION, array('admin', 'active'), 'logout.php');
 
     if(isset($_POST['envoyer']) && $_POST['envoyer']=="ok"){
         $target_dir = "imgs/";
@@ -59,15 +55,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>editer images</title>
-    <link rel="stylesheet" href="stylecss.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
-    <h1>TP Calendrier personnel</h1>
-    <?php 
-        // include the menu script 
-        include "inc/menu.inc.php"; 
-        // 
-    ?>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                TP Calendrier personnel en PHP
+            </div>
+        </div>
+        <div class="row">
+            <!-- As a heading -->
+            <?php echo navbar_bootstrap($_SESSION['role']); ?>
+        <div>
     <div class="formulaire">
         <table>
             <tr>
@@ -109,5 +109,8 @@
             </tr>
         </table>
     </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
 </body>
 </html>

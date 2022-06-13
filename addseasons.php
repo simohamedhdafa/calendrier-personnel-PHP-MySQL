@@ -1,5 +1,9 @@
 <?php 
     include 'functions.php'; 
+
+    session_start();
+    permission_navigation($_SESSION, array('admin'), 'logout.php');
+
     $filename = 'conf/seasons.csv';
     $seasons = array();
     $saisons = array();
@@ -38,12 +42,17 @@
     <link rel="stylesheet" href="stylecss.css">
 </head>
 <body>
-    <h1>TP Calendrier personnel</h1>
-    <?php 
-        // include the menu script 
-        include "inc/menu.inc.php"; 
-        // 
-    ?>  
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                TP Calendrier personnel en PHP
+            </div>
+        </div>
+        <div class="row">
+            <!-- As a heading -->
+            <?php echo navbar_bootstrap($_SESSION['role']); ?>
+        <div> 
+
     <div class="formulaire">
     <?php echo $confirmation ? "<h1>".$confirmation."</h1>" : "<h1>Bienvenu!</h1>"; ?>
         <form action="#" method="get">
@@ -96,5 +105,6 @@
         </form>
         <p><?php if($validata!==false) echo $validata; ?></p>
     </div>
+        </div>
 </body>
 </html>

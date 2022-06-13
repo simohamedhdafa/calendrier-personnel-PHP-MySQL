@@ -573,3 +573,133 @@ if(validation('gh5241+-', array('password', 'not_empty'))){
     echo 'False : la data est non valide!';
 }
 */
+
+function permission_navigation($une_session, $roles_permis, $redirection='logout.php', $message=''){
+    if(!isset($_SESSION['role'])){
+        if(!in_array('public', $roles_permis)){
+            header("Location: ".$redirection."?m=".$message);
+            return false;
+        }else{
+            return true;
+        }
+    }  
+    if(!in_array($_SESSION['role'], $roles_permis)){
+        header("Location: ".$redirection."?m=Vous ne disposez pas des bonnes permissions.");
+        return false;
+    } 
+    return true; 
+}
+
+define(
+    'NAVBAR', array(
+        'public' => array(
+            'accueil' => 'index_.php',
+            'qui sommes nous?' => 'quisommesnous.php',
+            's\'inscrire' => 'sinscrire.php'
+        ),
+        'active' => array(
+            'accueil' => 'index_.php',
+            'mes dates' => 'link',
+            'editer' => array(
+                'profil' => 'link',
+                'images' => 'editimages.php',
+                'dates' => 'link'
+            ),
+            'deconnexion' => 'logout.php'
+        ),
+        'desactive' => array(
+            'accueil' => 'index_.php',
+            'reactiver mon compte' => 'link'
+        ),
+        'new' => array(
+            'accueil' => 'index_.php',
+            'bienvenu' => 'link',
+            'qui sommes nous?' => 'link',
+            'deconnexion' => 'logout.php'
+        ),
+        'admin' => array(
+            'ajouter' => array(
+                'date' => 'link',
+                'compte' => 'link'
+            ),
+            'editer' => array(
+                'dates' => 'link',
+                'utilisateurs' => 'usersedit.php',
+                'saisons' => 'addseasons.php',
+                'images' => 'editimages.php',
+                'qui sommes nous?' => 'link'
+            ),
+            'deconnexion' => 'logout.php'
+        )
+    )
+);
+
+function navbar_bootstrap($role, $menu = NAVBAR){
+    $s = '<nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">';
+    
+    if(array_key_exists($role, NAVBAR)){
+        foreach(NAVBAR[$role] as $onglet => $lien){
+            if(!is_array($lien)){
+                $s .= '<li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="'.$lien.'">'.$onglet.'</a>
+                        </li>';
+            }else{
+                $s .= '<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            '.$onglet.'
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">';
+                foreach($lien as $sous_onglet => $sous_lien){
+                    $s .= '<li><a class="dropdown-item" href="'.$sous_lien.'">'.$sous_onglet.'</a></li>';
+                }
+                $s .= '</ul>
+                    </li>';
+            }            
+        }
+    }
+    
+
+    return $s .= '</ul>
+                </div>
+            </div>
+        </nav>';
+}
+
+function menu(){
+    return '<nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+      
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled">Disabled</a>
+                        </li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                    </div>
+                </nav>';
+}

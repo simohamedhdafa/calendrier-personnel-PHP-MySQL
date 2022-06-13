@@ -1,5 +1,7 @@
 <?php 
     include 'functions.php'; 
+    session_start();
+    permission_navigation($_SESSION, array('admin', 'public'), 'logout.php');
     // on se connecte à la base de données
     $user = "root";
     $pass = "";
@@ -82,12 +84,16 @@
     <title>s'inscrire</title>
 </head>
 <body>
-    <h1>TP Calendrier personnel</h1>
-    <?php 
-        // include the menu script 
-        include "inc/menu.inc.php"; 
-        // 
-    ?>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                TP Calendrier personnel en PHP
+            </div>
+        </div>
+        <div class="row">
+            <!-- As a heading -->
+            <?php echo navbar_bootstrap($_SESSION['role']); ?>
+        <div>
     <?php 
         if(!$valid_form){
             echo "<h3>".$err_msg."</h3><p>";
@@ -113,5 +119,6 @@
         <input type="file" name="photo" required><br>
         <input type="submit" name="envoyer" value="creer">
     </form>
+        </div>
 </body>
 </html>

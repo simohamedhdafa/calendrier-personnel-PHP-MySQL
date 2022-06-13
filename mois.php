@@ -1,4 +1,10 @@
-<?php include 'functions.php'; ?>
+<?php 
+include 'functions.php'; 
+session_start();
+permission_navigation($_SESSION, array('admin', 'active', 'public'), 'logout.php');
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : 'public';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +15,16 @@
     <link rel="stylesheet" href="stylecss.css">
 </head>
 <body>
-    <h1>TP Calendrier personnel</h1>
-    <?php 
-        // include the menu script 
-        include "inc/menu.inc.php"; 
-        // 
-    ?>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                TP Calendrier personnel en PHP
+            </div>
+        </div>
+        <div class="row">
+            <!-- As a heading -->
+            <?php echo navbar_bootstrap($role); ?>
+        <div>
     <div class="formulaire">
         <form action="/calendrier_v0/index.php" method="GET">
             <label for="months">Choisir un mois:</label>
@@ -37,5 +47,6 @@
     <div class="mois">
         <?php echo afficher_mois_html_table($_GET['m'], $_GET['a']); ?>
     </div>
+        </div>
 </body>
 </html>
